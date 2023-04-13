@@ -7,15 +7,25 @@
 #include <memory>
 #include <random>
 #include <seal/seal.h>
+#include <string>
 
 using namespace std::chrono;
 using namespace std;
 using namespace seal;
 
 int main(int argc, char *argv[]) {
-
-  uint64_t number_of_items = 1 << 16;
-  uint64_t size_per_item = 1024; // in bytes
+  uint64_t number_of_items, size_per_item;
+  if (argc > 1){
+     int log2_database = stoi(argv[1]);
+     number_of_items = 1 << log2_database;
+     size_per_item = stoi(argv[2]); // in bytes
+  }
+  else{
+     number_of_items = 1 << 16;
+     size_per_item = 1024; // in bytes
+  }
+  
+  cout << "Database size:" << number_of_items << ", Size per entry:" << size_per_item << endl;
   uint32_t N = 4096;
 
   // Recommended values: (logt, d) = (20, 2).

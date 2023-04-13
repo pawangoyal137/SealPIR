@@ -1,6 +1,8 @@
 #include "pir_server.hpp"
 #include "pir_client.hpp"
+#include <chrono>
 
+using namespace std::chrono;
 using namespace std;
 using namespace seal;
 using namespace seal::util;
@@ -200,6 +202,7 @@ PirReply PIRServer::generate_reply(PirQuery &query, uint32_t client_id) {
     uint64_t n_i = nvec[i];
     cout << "Server: n_i = " << n_i << endl;
     cout << "Server: expanding " << query[i].size() << " query ctxts" << endl;
+    auto expansion_s = high_resolution_clock::now();
     for (uint32_t j = 0; j < query[i].size(); j++) {
       uint64_t total = N;
       if (j == query[i].size() - 1) {
@@ -214,6 +217,11 @@ PirReply PIRServer::generate_reply(PirQuery &query, uint32_t client_id) {
           std::make_move_iterator(expanded_query_part.end()));
       expanded_query_part.clear();
     }
+    auto expansion_e = high_resolution_clock::now();
+    auto expansion_us =
+      duration_cast<microseconds>(expansion_e - expansion_s).count();
+    cout << "Server: Expansion time: " << expansion_us
+       << " us" << endl;
     cout << "Server: expansion done " << endl;
     if (expanded_query.size() != n_i) {
       cout << " size mismatch!!! " << expanded_query.size() << ", " << n_i
