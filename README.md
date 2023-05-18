@@ -1,3 +1,5 @@
+> # Copy of original github repo from [https://github.com/microsoft/SealPIR](https://github.com/microsoft/SealPIR) with slight modifications
+
 # SealPIR: A computational PIR library that achieves low communication costs and high performance.
 
 SealPIR is a research library and should not be used in production systems. 
